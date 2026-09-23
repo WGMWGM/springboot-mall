@@ -14,6 +14,7 @@ public class ProductRequest {
     private Integer price;
     @NotNull
     private Integer stock;
+
     private String description;
 
     public String getProduct_name() {
