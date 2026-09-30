@@ -3,6 +3,8 @@ package com.alextsai.springbootmall.service;
 import com.alextsai.springbootmall.dto.ProductRequest;
 import com.alextsai.springbootmall.model.Product;
 
+import java.util.List;
+
 public interface ProductService {
     Product getProductById(Integer productId);
 
@@ -11,4 +13,6 @@ public interface ProductService {
     int updateProduct(Integer productId, ProductRequest productRequest);
 
     int deleteProductById(Integer productId);
+
+    List<Product> getProducts();
 }

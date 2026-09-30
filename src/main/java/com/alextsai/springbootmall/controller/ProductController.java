@@ -9,11 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductController {
     @Autowired
     private ProductService productService;
-
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProduct() {
+        List<Product> products = productService.getProducts();
+            return ResponseEntity.ok().body(products);
+    }
     @GetMapping("/product/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
