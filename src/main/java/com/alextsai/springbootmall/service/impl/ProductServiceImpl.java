@@ -1,6 +1,7 @@
 package com.alextsai.springbootmall.service.impl;
 
 import com.alextsai.springbootmall.dao.ProductDao;
+import com.alextsai.springbootmall.dto.ProductQueryParams;
 import com.alextsai.springbootmall.dto.ProductRequest;
 import com.alextsai.springbootmall.model.Product;
 import com.alextsai.springbootmall.service.ProductService;
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
 }

@@ -1,5 +1,7 @@
 package com.alextsai.springbootmall.controller;
 
+import com.alextsai.springbootmall.constant.ProductCategory;
+import com.alextsai.springbootmall.dto.ProductQueryParams;
 import com.alextsai.springbootmall.dto.ProductRequest;
 import com.alextsai.springbootmall.model.Product;
 import com.alextsai.springbootmall.service.ProductService;
@@ -16,8 +18,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProduct() {
-        List<Product> products = productService.getProducts();
+    public ResponseEntity<List<Product>> getProduct(
+            @RequestParam(required = false)ProductCategory category,
+            @RequestParam(required = false)String keyword
+            ) {
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setKeyword(keyword);
+        productQueryParams.setCategory(category);
+        List<Product> products = productService.getProducts(productQueryParams);
             return ResponseEntity.ok().body(products);
     }
     @GetMapping("/product/{productId}")

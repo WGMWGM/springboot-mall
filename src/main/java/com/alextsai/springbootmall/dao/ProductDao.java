@@ -1,5 +1,6 @@
 package com.alextsai.springbootmall.dao;
 
+import com.alextsai.springbootmall.dto.ProductQueryParams;
 import com.alextsai.springbootmall.dto.ProductRequest;
 import com.alextsai.springbootmall.model.Product;
 
@@ -14,5 +15,5 @@ public interface ProductDao {
 
     int deleteProductById(Integer productId);
 
-    List<Product> getProducts();
+    List<Product> getProducts(ProductQueryParams productQueryParams);
 }

@@ -1,6 +1,7 @@
 package com.alextsai.springbootmall.dao.impl;
 
 import com.alextsai.springbootmall.dao.ProductDao;
+import com.alextsai.springbootmall.dto.ProductQueryParams;
 import com.alextsai.springbootmall.dto.ProductRequest;
 import com.alextsai.springbootmall.model.Product;
 import com.alextsai.springbootmall.rowmapper.ProductRowMapper;
@@ -81,10 +82,17 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> getProducts() {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql ="select product_id,product_name, category, image_url, price, stock, description, created_date, last_modified_date from product where 1=1";
         Map<String,Object> map = new HashMap<>();
-//        map.put("product_id",productId);
+        if(productQueryParams.getCategory()!=null){
+            sql+=" and category = :category ";
+            map.put("category",productQueryParams.getCategory().name());
+        }
+        if(productQueryParams.getKeyword()!=null){
+            sql+=" and  product_name like :keyword ";
+            map.put("keyword","%"+productQueryParams.getKeyword()+"%");
+        }
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
         return productList;
     }
