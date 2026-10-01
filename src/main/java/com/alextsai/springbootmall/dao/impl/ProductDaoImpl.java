@@ -85,19 +85,36 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql ="select product_id,product_name, category, image_url, price, stock, description, created_date, last_modified_date from product where 1=1";
         Map<String,Object> map = new HashMap<>();
-        if(productQueryParams.getCategory()!=null){
-            sql+=" and category = :category ";
-            map.put("category",productQueryParams.getCategory().name());
-        }
-        if(productQueryParams.getKeyword()!=null){
-            sql+=" and  product_name like :keyword ";
-            map.put("keyword","%"+productQueryParams.getKeyword()+"%");
-        }
+        //條件設定
+        sql = setQueryCondition(productQueryParams, sql, map);
+        //排序
         sql+=" order by "+productQueryParams.getOrderBy()+" "+productQueryParams.getSort();
+        //分頁
         sql+=" limit :limit offset :offset";
         map.put("limit",productQueryParams.getLimit());
         map.put("offset",productQueryParams.getOffset());
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
         return productList;
+    }
+
+    @Override
+    public Integer countProducts(ProductQueryParams productQueryParams) {
+        String sql ="select count(*) from product where 1=1";
+        Map<String,Object> map = new HashMap<>();
+        sql = setQueryCondition(productQueryParams, sql, map);
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return total;
+    }
+
+    private String setQueryCondition(ProductQueryParams productQueryParams, String sql, Map<String, Object> map) {
+        if(productQueryParams.getCategory()!=null){
+            sql +=" and category = :category ";
+            map.put("category", productQueryParams.getCategory().name());
+        }
+        if(productQueryParams.getKeyword()!=null){
+            sql +=" and  product_name like :keyword ";
+            map.put("keyword","%"+ productQueryParams.getKeyword()+"%");
+        }
+        return sql;
     }
 }

@@ -5,6 +5,7 @@ import com.alextsai.springbootmall.dto.ProductQueryParams;
 import com.alextsai.springbootmall.dto.ProductRequest;
 import com.alextsai.springbootmall.model.Product;
 import com.alextsai.springbootmall.service.ProductService;
+import com.alextsai.springbootmall.util.Page;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -21,7 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProduct(
+    public ResponseEntity<Page<Product>> getProduct(
             @RequestParam(required = false)ProductCategory category,
             @RequestParam(required = false)String keyword,
             @RequestParam(defaultValue = "created_date")String orderBy,
@@ -38,7 +39,12 @@ public class ProductController {
         productQueryParams.setOffset(offset);
 
         List<Product> products = productService.getProducts(productQueryParams);
-            return ResponseEntity.ok().body(products);
+        Page<Product> productPage = new Page<>();
+        productPage.setLimit(limit);
+        productPage.setOffset(offset);
+        productPage.setTotal(productService.countProducts(productQueryParams));
+        productPage.setResult(products);
+        return ResponseEntity.ok().body(productPage);
     }
     @GetMapping("/product/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
