@@ -1,18 +1,24 @@
 package com.alextsai.springbootmall.model;
 
 import com.alextsai.springbootmall.constant.ProductCategory;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
 public class Product {
+    @JsonProperty(value = "productId")
     private Integer product_id;
+    @JsonProperty(value = "productName")
     private String product_name;
     private ProductCategory category;
+    @JsonProperty(value = "imageUrl")
     private String image_url;
     private Integer price;
     private Integer stock;
     private String description;
+    @JsonProperty(value = "createdDate")
     private Date created_date;
+    @JsonProperty(value = "lastModifiedDate")
     private Date last_modified_date;
 
     public Integer getProduct_id() {

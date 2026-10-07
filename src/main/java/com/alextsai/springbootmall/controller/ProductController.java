@@ -28,7 +28,7 @@ public class ProductController {
             @RequestParam(defaultValue = "created_date")String orderBy,
             @RequestParam(defaultValue = "desc")String sort,
             @RequestParam(defaultValue = "0")@Min(0)Integer offset,
-            @RequestParam(defaultValue = "2")@Max(1000)@Min(0)Integer limit
+            @RequestParam(defaultValue = "5")@Max(1000)@Min(0)Integer limit
             ) {
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setKeyword(keyword);
@@ -43,10 +43,10 @@ public class ProductController {
         productPage.setLimit(limit);
         productPage.setOffset(offset);
         productPage.setTotal(productService.countProducts(productQueryParams));
-        productPage.setResult(products);
+        productPage.setResults(products);
         return ResponseEntity.ok().body(productPage);
     }
-    @GetMapping("/product/{productId}")
+    @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
         if (product != null) {
