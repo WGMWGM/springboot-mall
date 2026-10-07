@@ -4,7 +4,7 @@ import com.alextsai.springbootmall.dto.UserRequest;
 import com.alextsai.springbootmall.model.User;
 
 public interface UserService {
-    Integer createUser(UserRequest userRequest);
+    Integer register(UserRequest userRequest);
 
     User getUserById(Integer userId);
 }

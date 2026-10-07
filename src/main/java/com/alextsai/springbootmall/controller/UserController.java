@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Valid
+
 @RestController
 public class UserController {
     @Autowired
@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("user/register")
     public ResponseEntity<User> register(@RequestBody @Valid UserRequest userRequest) {
-        Integer userId = userService.createUser(userRequest);
+        Integer userId = userService.register(userRequest);
         User user = userService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
