@@ -1,7 +1,8 @@
 package com.alextsai.springbootmall.service.impl;
 
 import com.alextsai.springbootmall.dao.UserDao;
-import com.alextsai.springbootmall.dto.UserRequest;
+import com.alextsai.springbootmall.dto.UserLoginRequest;
+import com.alextsai.springbootmall.dto.UserRegisterRequest;
 import com.alextsai.springbootmall.model.User;
 import com.alextsai.springbootmall.service.UserService;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
     @Override
-    public Integer register(UserRequest userRequest) {
+    public Integer register(UserRegisterRequest userRequest) {
         User user = userDao.getUserByEmail(userRequest);
         if(user!=null){
             log.warn("email: {} 已經被註冊",userRequest.getEmail());
@@ -31,5 +32,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+        User user = userDao.getUserByEmail(userLoginRequest);
+        if(user==null){
+            log.warn("該email {} 尚未註冊",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        if(user.getPassword().equals(userLoginRequest.getPassword())){
+            return user;
+        }else{
+            log.warn("email {} 的密碼不正確",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }

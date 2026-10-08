@@ -1,6 +1,7 @@
 package com.alextsai.springbootmall.controller;
 
-import com.alextsai.springbootmall.dto.UserRequest;
+import com.alextsai.springbootmall.dto.UserLoginRequest;
+import com.alextsai.springbootmall.dto.UserRegisterRequest;
 import com.alextsai.springbootmall.model.User;
 import com.alextsai.springbootmall.service.UserService;
 import jakarta.validation.Valid;
@@ -18,10 +19,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("user/register")
-    public ResponseEntity<User> register(@RequestBody @Valid UserRequest userRequest) {
+    public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRequest) {
         Integer userId = userService.register(userRequest);
         User user = userService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+    @PostMapping("user/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
+        User user = userService.login(userLoginRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }
