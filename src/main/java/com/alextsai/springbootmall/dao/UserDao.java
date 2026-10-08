@@ -9,7 +9,5 @@ public interface UserDao {
 
     User getUserById(Integer userId);
 
-    User getUserByEmail(UserRegisterRequest userRequest);
-
-    User getUserByEmail(UserLoginRequest userLoginRequest);
+    User getUserByEmail(String email);
 }

@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Override
     public Integer register(UserRegisterRequest userRequest) {
-        User user = userDao.getUserByEmail(userRequest);
+        User user = userDao.getUserByEmail(userRequest.getEmail());
         if(user!=null){
             log.warn("email: {} 已經被註冊",userRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(UserLoginRequest userLoginRequest) {
-        User user = userDao.getUserByEmail(userLoginRequest);
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
         if(user==null){
             log.warn("該email {} 尚未註冊",userLoginRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
