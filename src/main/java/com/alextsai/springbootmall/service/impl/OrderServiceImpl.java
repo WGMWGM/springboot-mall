@@ -4,6 +4,7 @@ import com.alextsai.springbootmall.dao.OrderDao;
 import com.alextsai.springbootmall.dao.ProductDao;
 import com.alextsai.springbootmall.dto.BuyItem;
 import com.alextsai.springbootmall.dto.CreateOrderRequest;
+import com.alextsai.springbootmall.model.Order;
 import com.alextsai.springbootmall.model.OrderItem;
 import com.alextsai.springbootmall.model.Product;
 import com.alextsai.springbootmall.service.OrderService;
@@ -44,5 +45,13 @@ public class OrderServiceImpl implements OrderService {
         //創建訂單明細
         orderDao.createOrderItem(orderId, orderItemList);
         return orderId;
+    }
+
+    @Override
+    public Order getOrderById(Integer orderId) {
+        Order order = orderDao.getOrderById(orderId);
+        List<OrderItem> orderItemList = orderDao.getOrderItemByOrderId(orderId);
+        order.setOrderItemList(orderItemList);
+        return order;
     }
 }

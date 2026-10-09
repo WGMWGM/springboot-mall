@@ -1,6 +1,7 @@
 package com.alextsai.springbootmall.controller;
 
 import com.alextsai.springbootmall.dto.CreateOrderRequest;
+import com.alextsai.springbootmall.model.Order;
 import com.alextsai.springbootmall.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class OrderController {
 
         Integer orderId = orderService.createOrder(userId,createOrderRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+        Order order = orderService.getOrderById(orderId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 }
