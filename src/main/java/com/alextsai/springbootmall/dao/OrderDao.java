@@ -1,5 +1,6 @@
 package com.alextsai.springbootmall.dao;
 
+import com.alextsai.springbootmall.dto.OrderQueryParams;
 import com.alextsai.springbootmall.model.Order;
 import com.alextsai.springbootmall.model.OrderItem;
 
@@ -13,4 +14,8 @@ public interface OrderDao {
     void createOrderItem(Integer orderId, List<OrderItem> orderItemList);
 
     List<OrderItem> getOrderItemByOrderId(Integer orderId);
+
+    List<Order> getOrders(OrderQueryParams orderQueryParams);
+
+    Integer countOrders(OrderQueryParams orderQueryParams);
 }

@@ -1,6 +1,8 @@
 package com.alextsai.springbootmall.dao.impl;
 
 import com.alextsai.springbootmall.dao.OrderDao;
+import com.alextsai.springbootmall.dto.OrderQueryParams;
+import com.alextsai.springbootmall.dto.ProductQueryParams;
 import com.alextsai.springbootmall.model.Order;
 import com.alextsai.springbootmall.model.OrderItem;
 import com.alextsai.springbootmall.model.User;
@@ -88,5 +90,40 @@ public class OrderDaoImpl implements OrderDao {
         List<OrderItem> orderItemList = namedParameterJdbcTemplate.query(sql, map, new OrderItemRowMapper());
 
         return orderItemList;
+    }
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        String sql ="SELECT order_id,user_id,total_amount,created_date,last_modified_date from `order` where 1=1";
+        Map<String,Object> map = new HashMap<>();
+        //查詢條件
+        setQueryCondition(orderQueryParams,sql,map);
+        //排序
+        sql+= " ORDER BY created_date DESC ";
+        //分頁
+        sql+= " LIMIT :limit OFFSET :offset";
+        map.put("limit",orderQueryParams.getLimit());
+        map.put("offset",orderQueryParams.getOffset());
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
+        return orderList;
+    }
+
+    @Override
+    public Integer countOrders(OrderQueryParams orderQueryParams) {
+        String sql ="SELECT count(*) from `order` where 1=1";
+        Map<String,Object> map = new HashMap<>();
+        //查詢條件
+        setQueryCondition(orderQueryParams,sql,map);
+
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return total;
+    }
+
+    private String setQueryCondition(OrderQueryParams orderQueryParams, String sql, Map<String, Object> map) {
+        if(orderQueryParams.getUserId()!=null){
+            sql +=" and user_id = :user_id ";
+            map.put("user_id", orderQueryParams.getUserId());
+        }
+        return sql;
     }
 }
